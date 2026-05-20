@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FoodieHub — Order the best food from top restaurants, fresh and fast to your door.">
+  <title>FoodieHub — Taste the Extraordinary</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========== CSS VARIABLES ========== */
+    :root {
+      --bg-primary:    #FFF8F3;
+      --bg-secondary:  #FFEFE2;
+      --bg-card:       #ffffff;
+      --text-primary:  #1a1a1a;
+      --text-secondary:#666666;
+      --accent:        #FF6B2B;
+      --accent-hover:  #e5521a;
+      --accent-light:  rgba(255,107,43,0.12);
+      --gold:          #FFB347;
+      --border:        rgba(0,0,0,0.08);
+      --navbar-bg:     rgba(255,248,243,0.92);
+      --card-shadow:   0 8px 32px rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg-primary:    #111111;
+      --bg-secondary:  #1a1a1a;
+      --bg-card:       #1e1e1e;
+      --text-primary:  #f5f5f5;
+      --text-secondary:#aaaaaa;
+      --accent:        #FF6B2B;
+      --accent-hover:  #ff8c57;
+      --accent-light:  rgba(255,107,43,0.15);
+      --border:        rgba(255,255,255,0.08);
+      --navbar-bg:     rgba(17,17,17,0.95);
+      --card-shadow:   0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    /* ========== RESET & BASE ========== */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      transition: background .4s ease, color .4s ease;
+      overflow-x: hidden;
+    }
+    h1,h2,h3 { font-family: 'Playfair Display', serif; }
+    a { text-decoration: none; }
+
+    /* ========== NAVBAR ========== */
+    .navbar {
+      background: var(--navbar-bg) !important;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+      position: fixed; width:100%; top:0; z-index:1000;
+      transition: box-shadow .3s;
+    }
+    .navbar.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,.1); }
+    .navbar-brand {
+      font-family:'Playfair Display',serif;
+      font-weight:900; font-size:1.65rem;
+      color: var(--accent) !important; letter-spacing:-.5px;
+    }
+    .navbar-brand span { color: var(--text-primary); }
+    .nav-link {
+      color: var(--text-primary) !important;
+      font-weight:500; font-size:.9rem;
+      padding:6px 14px !important; border-radius:8px;
+      transition: all .2s;
+    }
+    .nav-link:hover { background:var(--accent-light); color:var(--accent) !important; }
+
+    /* Cart button */
+    .btn-cart {
+      background: var(--accent-light);
+      color: var(--accent) !important;
+      border: 1.5px solid var(--accent);
+      padding: 8px 20px; border-radius:50px;
+      font-weight:700; font-size:.85rem;
+      cursor:pointer; transition:all .3s;
+      position:relative;
+    }
+    .btn-cart:hover { background:var(--accent); color:white !important; }
+    .cart-badge {
+      position:absolute; top:-7px; right:-7px;
+      background:var(--gold); color:#000;
+      font-size:.68rem; font-weight:800;
+      width:20px; height:20px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    /* Dark mode toggle */
+    .btn-theme {
+      background:var(--accent-light);
+      border:1.5px solid var(--border);
+      color:var(--text-primary);
+      width:38px; height:38px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:all .3s; font-size:.9rem;
+    }
+    .btn-theme:hover { background:var(--accent); color:white; border-color:var(--accent); }
+
+    /* ========== HERO ========== */
+    .hero-section {
+      min-height:100vh; display:flex; align-items:center;
+      position:relative; overflow:hidden; padding-top:90px;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse at 80% 50%, rgba(255,107,43,.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 15% 80%, rgba(255,179,71,.12) 0%, transparent 50%),
+        var(--bg-primary);
+    }
+    .hero-content { position:relative; z-index:2; }
+
+    .hero-eyebrow {
+      display:inline-flex; align-items:center; gap:8px;
+      background:var(--accent-light); border:1px solid var(--accent);
+      color:var(--accent); padding:6px 16px; border-radius:50px;
+      font-size:.78rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:1.5px;
+      margin-bottom:22px;
+      animation: fadeDown .6s ease both;
+    }
+    .hero-title {
+      font-size: clamp(2.8rem, 7vw, 5.2rem);
+      font-weight:900; line-height:1.1;
+      color:var(--text-primary); margin-bottom:20px;
+      animation: fadeDown .7s .1s ease both;
+    }
+    .hero-title .hi { color:var(--accent); position:relative; }
+    .hero-title .hi::after {
+      content:''; position:absolute; bottom:4px; left:0;
+      width:100%; height:4px; background:var(--gold); border-radius:2px;
+    }
+    .hero-desc {
+      font-size:1rem; color:var(--text-secondary);
+      max-width:460px; line-height:1.85; margin-bottom:34px;
+      animation: fadeDown .7s .2s ease both;
+    }
+    .hero-actions {
+      display:flex; gap:14px; flex-wrap:wrap;
+      animation: fadeDown .7s .3s ease both;
+    }
+    .btn-order {
+      background:var(--accent); color:white; border:none;
+      padding:14px 32px; border-radius:50px;
+      font-weight:700; font-size:1rem; cursor:pointer;
+      display:inline-flex; align-items:center; gap:10px;
+      box-shadow:0 8px 24px rgba(255,107,43,.35);
+      transition:all .3s;
+    }
+    .btn-order:hover {
+      background:var(--accent-hover); color:white;
+      transform:translateY(-3px);
+      box-shadow:0 14px 36px rgba(255,107,43,.45);
+    }
+    .btn-browse {
+      background:transparent; color:var(--text-primary);
+      border:2px solid var(--border);
+      padding:14px 32px; border-radius:50px;
+      font-weight:600; font-size:1rem;
+      display:inline-flex; align-items:center; gap:10px;
+      transition:all .3s;
+    }
+    .btn-browse:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-3px); }
+
+    /* Stats */
+    .hero-stats {
+      display:flex; gap:36px; flex-wrap:wrap;
+      margin-top:46px;
+      animation: fadeUp .7s .4s ease both;
+    }
+    .stat-num {
+      font-family:'Playfair Display',serif;
+      font-size:1.75rem; font-weight:900; color:var(--accent); display:block;
+    }
+    .stat-lbl { font-size:.73rem; color:var(--text-secondary); font-weight:600; text-transform:uppercase; letter-spacing:.8px; }
+
+    /* Hero visual */
+    .hero-visual {
+      position:relative; display:flex; align-items:center; justify-content:center;
+      animation: fadeRight .9s .2s ease both;
+    }
+    .hero-circle {
+      width: clamp(300px,42vw,520px);
+      height: clamp(300px,42vw,520px);
+      border-radius:50%;
+      background: radial-gradient(ellipse, rgba(255,107,43,.18), rgba(255,179,71,.08));
+      display:flex; align-items:center; justify-content:center;
+    }
+    .hero-img {
+      width:90%; height:90%; object-fit:contain; border-radius:50%;
+      filter:drop-shadow(0 20px 60px rgba(255,107,43,.35));
+      animation: float 4s ease-in-out infinite;
+    }
+    .floating-badge {
+      position:absolute; background:var(--bg-card);
+      border:1.5px solid var(--border); border-radius:16px;
+      padding:12px 16px; display:flex; align-items:center; gap:10px;
+      box-shadow:var(--card-shadow);
+    }
+    .floating-badge.b1 { top:12%; left:-10px; animation: float 3.5s -1s ease-in-out infinite; }
+    .floating-badge.b2 { bottom:15%; right:-10px; animation: float 3.5s -2s ease-in-out infinite; }
+    .badge-icon { font-size:1.6rem; }
+    .badge-text strong { display:block; font-size:.85rem; font-weight:700; color:var(--text-primary); }
+    .badge-text span { font-size:.72rem; color:var(--text-secondary); }
+
+    /* ========== SECTION SHARED ========== */
+    section { padding:90px 0; }
+    .sec-eyebrow {
+      display:inline-flex; align-items:center; gap:8px;
+      color:var(--accent); font-size:.78rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;
+    }
+    .sec-eyebrow::before,.sec-eyebrow::after { content:''; width:22px; height:2px; background:var(--accent); border-radius:1px; }
+    .sec-title {
+      font-size:clamp(1.9rem,4vw,2.7rem);
+      font-weight:900; color:var(--text-primary); margin-bottom:10px;
+    }
+    .sec-sub { color:var(--text-secondary); font-size:.93rem; line-height:1.75; max-width:480px; }
+
+    /* ========== POPULAR FOOD CARDS ========== */
+    .popular-section { background:var(--bg-secondary); }
+
+    .food-card {
+      background:var(--bg-card); border-radius:24px; overflow:hidden;
+      border:1px solid var(--border); box-shadow:var(--card-shadow);
+      transition:all .35s ease; position:relative;
+    }
+    .food-card:hover { transform:translateY(-8px); box-shadow:0 24px 56px rgba(255,107,43,.22); border-color:var(--accent); }
+    .food-img-wrap { position:relative; height:220px; overflow:hidden; background:var(--accent-light); }
+    .food-img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+    .food-card:hover .food-img { transform:scale(1.08); }
+
+    .food-tag {
+      position:absolute; top:14px; left:14px;
+      background:var(--accent); color:white;
+      font-size:.7rem; font-weight:700;
+      padding:5px 12px; border-radius:50px; text-transform:uppercase; letter-spacing:.5px;
+    }
+    .food-fav {
+      position:absolute; top:14px; right:14px;
+      width:36px; height:36px; background:var(--bg-card); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:all .3s; color:var(--text-secondary); font-size:.9rem;
+    }
+    .food-fav:hover, .food-fav.active { color:#e74c3c; background:#ffeaea; }
+
+    .food-body { padding:20px; }
+    .food-name { font-family:'Playfair Display',serif; font-size:1.18rem; font-weight:700; color:var(--text-primary); margin-bottom:6px; }
+    .food-desc { font-size:.8rem; color:var(--text-secondary); margin-bottom:14px; line-height:1.55; }
+    .food-stars { color:var(--gold); font-size:.84rem; }
+    .food-rating { display:flex; align-items:center; gap:4px; margin-bottom:16px; font-size:.78rem; }
+    .food-footer { display:flex; align-items:center; justify-content:space-between; }
+    .food-price { font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:900; color:var(--accent); }
+    .food-price sub { font-size:.82rem; font-weight:500; color:var(--text-secondary); }
+    .btn-add {
+      background:var(--accent); color:white; border:none;
+      width:40px; height:40px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1rem; cursor:pointer; transition:all .3s;
+      box-shadow:0 4px 14px rgba(255,107,43,.4);
+    }
+    .btn-add:hover { transform:scale(1.12); background:var(--accent-hover); }
+
+    /* ========== MENU SECTION ========== */
+    .menu-section { background:var(--bg-primary); }
+    .cat-filters { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:38px; }
+    .cat-btn {
+      background:var(--bg-card); border:1.5px solid var(--border);
+      color:var(--text-secondary); padding:9px 22px; border-radius:50px;
+      font-weight:600; font-size:.84rem; cursor:pointer; transition:all .3s;
+      display:flex; align-items:center; gap:7px;
+    }
+    .cat-btn.active, .cat-btn:hover { background:var(--accent); border-color:var(--accent); color:white; }
+
+    .menu-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+      gap:22px;
+    }
+    .menu-card {
+      background:var(--bg-card); border-radius:18px; padding:16px;
+      display:flex; gap:14px; align-items:center;
+      border:1px solid var(--border); box-shadow:var(--card-shadow);
+      transition:all .3s;
+    }
+    .menu-card:hover { border-color:var(--accent); transform:translateX(5px); }
+    .menu-emoji {
+      width:68px; height:68px; border-radius:14px;
+      background:var(--accent-light); font-size:2rem;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .menu-name { font-weight:700; font-size:.93rem; color:var(--text-primary); margin-bottom:3px; }
+    .menu-desc { font-size:.76rem; color:var(--text-secondary); line-height:1.4; margin-bottom:9px; }
+    .menu-bottom { display:flex; align-items:center; justify-content:space-between; }
+    .menu-price { font-weight:800; color:var(--accent); font-size:.98rem; }
+    .btn-add-sm {
+      background:var(--accent-light); border:1px solid var(--accent);
+      color:var(--accent); padding:5px 13px; border-radius:50px;
+      font-size:.77rem; font-weight:700; cursor:pointer; transition:all .3s;
+    }
+    .btn-add-sm:hover { background:var(--accent); color:white; }
+
+    /* ========== REVIEWS ========== */
+    .reviews-section { background:var(--bg-secondary); }
+    .review-card {
+      background:var(--bg-card); border-radius:24px; padding:28px;
+      border:1px solid var(--border); box-shadow:var(--card-shadow);
+      height:100%; transition:all .3s;
+    }
+    .review-card:hover { transform:translateY(-6px); border-color:var(--accent); }
+    .review-stars { color:var(--gold); font-size:1rem; margin-bottom:14px; }
+    .review-text { font-size:.9rem; color:var(--text-secondary); line-height:1.8; margin-bottom:20px; font-style:italic; }
+    .review-author { display:flex; align-items:center; gap:14px; }
+    .review-av {
+      width:48px; height:48px; border-radius:50%;
+      background:var(--accent-light); border:2px solid var(--accent);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800; color:var(--accent); font-size:.95rem; flex-shrink:0;
+    }
+    .author-name { font-weight:700; font-size:.93rem; color:var(--text-primary); }
+    .author-role { font-size:.75rem; color:var(--text-secondary); }
+
+    /* ========== CTA ========== */
+    .cta-section { background:var(--bg-primary); }
+    .cta-box {
+      background:linear-gradient(135deg, #FF6B2B 0%, #ff9a63 100%);
+      border-radius:32px; padding:70px 50px; text-align:center; position:relative; overflow:hidden;
+    }
+    .cta-box::before { content:''; position:absolute; top:-50%; right:-8%; width:420px; height:420px; background:rgba(255,255,255,.07); border-radius:50%; }
+    .cta-box::after  { content:''; position:absolute; bottom:-35%; left:-4%; width:320px; height:320px; background:rgba(255,255,255,.05); border-radius:50%; }
+    .cta-title { font-size:clamp(2rem,4vw,2.7rem); font-weight:900; color:white; margin-bottom:14px; position:relative; z-index:2; }
+    .cta-sub   { color:rgba(255,255,255,.88); font-size:.98rem; margin-bottom:30px; position:relative; z-index:2; }
+    .btn-white {
+      background:white; color:var(--accent); border:none;
+      padding:14px 36px; border-radius:50px;
+      font-weight:800; font-size:1rem; cursor:pointer;
+      display:inline-flex; align-items:center; gap:10px;
+      transition:all .3s; position:relative; z-index:2;
+    }
+    .btn-white:hover { background:var(--gold); color:white; transform:translateY(-3px); }
+
+    /* ========== FOOTER ========== */
+    footer {
+      background:var(--bg-secondary);
+      border-top:1px solid var(--border);
+      padding:70px 0 28px;
+    }
+    .footer-brand { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:900; color:var(--accent); display:block; margin-bottom:12px; }
+    .footer-desc { color:var(--text-secondary); font-size:.87rem; line-height:1.72; max-width:250px; margin-bottom:24px; }
+    .social-row { display:flex; gap:10px; }
+    .soc-btn {
+      width:40px; height:40px; border-radius:50%;
+      background:var(--accent-light); border:1.5px solid var(--border);
+      color:var(--accent); display:flex; align-items:center; justify-content:center;
+      font-size:.9rem; transition:all .3s;
+    }
+    .soc-btn:hover { background:var(--accent); color:white; border-color:var(--accent); }
+    .footer-head { font-weight:700; font-size:1rem; color:var(--text-primary); margin-bottom:18px; }
+    .footer-ul { list-style:none; padding:0; }
+    .footer-ul li { margin-bottom:10px; }
+    .footer-ul a { color:var(--text-secondary); font-size:.87rem; transition:color .2s; }
+    .footer-ul a:hover { color:var(--accent); }
+    .contact-row { display:flex; align-items:flex-start; gap:10px; color:var(--text-secondary); font-size:.87rem; margin-bottom:12px; }
+    .contact-row i { color:var(--accent); margin-top:2px; flex-shrink:0; }
+    .footer-bottom { border-top:1px solid var(--border); margin-top:48px; padding-top:22px; text-align:center; color:var(--text-secondary); font-size:.82rem; }
+
+    /* ========== CART SIDEBAR ========== */
+    .cart-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,.5);
+      z-index:2000; opacity:0; visibility:hidden; transition:all .3s;
+    }
+    .cart-overlay.open { opacity:1; visibility:visible; }
+    .cart-sidebar {
+      position:fixed; top:0; right:0; width:390px; max-width:95vw; height:100vh;
+      background:var(--bg-card); z-index:2001;
+      transform:translateX(100%);
+      transition:transform .4s cubic-bezier(.4,0,.2,1);
+      display:flex; flex-direction:column;
+      border-left:1px solid var(--border);
+      box-shadow:-20px 0 60px rgba(0,0,0,.2);
+    }
+    .cart-sidebar.open { transform:translateX(0); }
+    .cart-hdr {
+      padding:22px 24px; border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .cart-hdr-title { font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:700; color:var(--text-primary); }
+    .btn-close-cart {
+      width:36px; height:36px; border-radius:50%;
+      background:var(--accent-light); border:none;
+      color:var(--accent); display:flex; align-items:center; justify-content:center;
+      cursor:pointer; font-size:1rem; transition:all .3s;
+    }
+    .btn-close-cart:hover { background:var(--accent); color:white; }
+    .cart-body { flex:1; overflow-y:auto; padding:18px 20px; }
+    .cart-empty-state {
+      display:flex; flex-direction:column; align-items:center;
+      justify-content:center; height:100%; color:var(--text-secondary); text-align:center; gap:12px;
+    }
+    .cart-empty-state i { font-size:3rem; color:var(--border); }
+    .cart-item {
+      display:flex; gap:14px; align-items:center;
+      padding:14px 0; border-bottom:1px solid var(--border);
+    }
+    .c-emoji { width:58px; height:58px; border-radius:12px; background:var(--accent-light); display:flex; align-items:center; justify-content:center; font-size:1.6rem; flex-shrink:0; }
+    .c-name { font-weight:700; font-size:.9rem; color:var(--text-primary); margin-bottom:3px; }
+    .c-price { color:var(--accent); font-weight:700; font-size:.88rem; }
+    .qty-ctrl { display:flex; align-items:center; gap:10px; margin-left:auto; }
+    .qty-btn { width:28px; height:28px; border-radius:50%; background:var(--accent-light); border:1px solid var(--accent); color:var(--accent); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:.7rem; transition:all .2s; }
+    .qty-btn:hover { background:var(--accent); color:white; }
+    .qty-n { font-weight:700; font-size:.93rem; color:var(--text-primary); min-width:18px; text-align:center; }
+    .cart-ftr { padding:18px 24px; border-top:1px solid var(--border); }
+    .total-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .total-lbl { font-weight:600; color:var(--text-secondary); font-size:.9rem; }
+    .total-amt { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:900; color:var(--accent); }
+    .btn-checkout {
+      width:100%; background:var(--accent); color:white; border:none;
+      padding:15px; border-radius:50px; font-weight:700; font-size:1rem;
+      cursor:pointer; transition:all .3s;
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      box-shadow:0 6px 20px rgba(255,107,43,.35);
+    }
+    .btn-checkout:hover { background:var(--accent-hover); transform:translateY(-2px); }
+
+    /* ========== TOAST ========== */
+    .toast-box {
+      position:fixed; bottom:24px; right:24px; z-index:9999;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .toast-msg {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-left:4px solid var(--accent); padding:13px 18px;
+      border-radius:12px; font-size:.87rem; font-weight:600;
+      color:var(--text-primary); box-shadow:0 8px 30px rgba(0,0,0,.15);
+      display:flex; align-items:center; gap:10px;
+      animation:slideInR .3s ease both; max-width:290px;
+    }
+    .toast-msg i { color:var(--accent); }
+
+    /* ========== SCROLL REVEAL ========== */
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .55s ease, transform .55s ease; }
+    .reveal.show { opacity:1; transform:translateY(0); }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes float      { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes fadeDown   { from{opacity:0;transform:translateY(-22px)} to{opacity:1;transform:none} }
+    @keyframes fadeUp     { from{opacity:0;transform:translateY(22px)}  to{opacity:1;transform:none} }
+    @keyframes fadeRight  { from{opacity:0;transform:translateX(40px)}  to{opacity:1;transform:none} }
+    @keyframes slideInR   { from{opacity:0;transform:translateX(50px)}  to{opacity:1;transform:none} }
+
+    /* ========== RESPONSIVE ========== */
+    @media(max-width:991px) {
+      .hero-visual { margin-top:40px; }
+      .hero-circle { width:300px; height:300px; }
+      .floating-badge { display:none; }
+      section { padding:70px 0; }
+    }
+    @media(max-width:768px) {
+      .hero-title { font-size:2.4rem; }
+      .hero-stats { gap:22px; }
+      .cta-box { padding:48px 24px; }
+      .cat-filters { justify-content:center; }
+    }
+    @media(max-width:480px) {
+      .hero-actions { flex-direction:column; }
+      .hero-circle { width:250px; height:250px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ NAVBAR ═══════════════ -->
+<nav class="navbar navbar-expand-lg" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="#">Foodie<span>Hub</span></a>
+    <button class="navbar-toggler border-0 shadow-none" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navLinks"
+            style="color:var(--text-primary)">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navLinks">
+      <ul class="navbar-nav mx-auto gap-1">
+        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#popular">Popular</a></li>
+        <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
+        <li class="nav-item"><a class="nav-link" href="#reviews">Reviews</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle Dark Mode">
+          <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+        <button class="btn-cart" onclick="openCart()">
+          <i class="fas fa-shopping-bag me-1"></i> Cart
+          <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero-section" id="home">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- Left -->
+      <div class="col-lg-6 hero-content">
+        <div class="hero-eyebrow"><i class="fas fa-fire"></i> Hot &amp; Fresh Delivery</div>
+        <h1 class="hero-title">
+          Taste the<br>
+          <span class="hi">Extraordinary</span><br>
+          Every Bite
+        </h1>
+        <p class="hero-desc">
+          Discover the finest flavours from top restaurants — delivered fresh to your door.
+          From spicy street food to gourmet cuisine, all in one place.
+        </p>
+        <div class="hero-actions">
+          <a href="#popular" class="btn-order"><i class="fas fa-bolt"></i> Order Now</a>
+          <a href="#menu"    class="btn-browse"><i class="fas fa-utensils"></i> Explore Menu</a>
+        </div>
+        <div class="hero-stats">
+          <div><span class="stat-num">250+</span><span class="stat-lbl">Dishes</span></div>
+          <div><span class="stat-num">15K+</span><span class="stat-lbl">Customers</span></div>
+          <div><span class="stat-num">4.9★</span><span class="stat-lbl">Rating</span></div>
+          <div><span class="stat-num">30min</span><span class="stat-lbl">Delivery</span></div>
+        </div>
+      </div>
+      <!-- Right -->
+      <div class="col-lg-6">
+        <div class="hero-visual">
+          <div class="hero-circle">
+            <img
+              src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop"
+              alt="Delicious Burger"
+              class="hero-img"
+              onerror="this.style.display='none'"
+            >
+          </div>
+          <div class="floating-badge b1">
+            <div class="badge-icon">🍕</div>
+            <div class="badge-text">
+              <strong>Free Delivery</strong>
+              <span>On first order</span>
+            </div>
+          </div>
+          <div class="floating-badge b2">
+            <div class="badge-icon">⭐</div>
+            <div class="badge-text">
+              <strong>Top Rated</strong>
+              <span>4.9 / 5 stars</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ POPULAR FOOD ═══════════════ -->
+<section class="popular-section" id="popular">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="sec-eyebrow mx-auto">Most Loved</div>
+      <h2 class="sec-title">Popular Right Now</h2>
+      <p class="sec-sub mx-auto">Our customers' all-time favourites — freshly prepared, perfectly priced, and always delicious.</p>
+    </div>
+    <div class="row g-4" id="foodGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ MENU CATEGORIES ═══════════════ -->
+<section class="menu-section" id="menu">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="sec-eyebrow mx-auto">Browse &amp; Discover</div>
+      <h2 class="sec-title">Explore Our Full Menu</h2>
+      <p class="sec-sub mx-auto">From crispy fast food to sweet desserts — find exactly what you're craving right now.</p>
+    </div>
+    <div class="cat-filters justify-content-center">
+      <button class="cat-btn active" onclick="filterMenu('all',this)">🍽️ All Items</button>
+      <button class="cat-btn" onclick="filterMenu('fastfood',this)">🍔 Fast Food</button>
+      <button class="cat-btn" onclick="filterMenu('bbq',this)">🔥 BBQ</button>
+      <button class="cat-btn" onclick="filterMenu('desserts',this)">🍰 Desserts</button>
+      <button class="cat-btn" onclick="filterMenu('drinks',this)">🥤 Drinks</button>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ REVIEWS ═══════════════ -->
+<section class="reviews-section" id="reviews">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="sec-eyebrow mx-auto">Happy Customers</div>
+      <h2 class="sec-title">What People Are Saying</h2>
+      <p class="sec-sub mx-auto">Real reviews from real food lovers who keep coming back for more.</p>
+    </div>
+    <div class="row g-4" id="reviewsGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box">
+      <h2 class="cta-title">Ready to Order Something Delicious?</h2>
+      <p class="cta-sub">Get your first delivery free. Join 15,000+ happy customers who never cook on weeknights.</p>
+      <a href="#popular" class="btn-white"><i class="fas fa-rocket"></i> Start Ordering Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer id="contact">
+  <div class="container">
+    <div class="row g-5">
+      <!-- Brand -->
+      <div class="col-lg-4">
+        <span class="footer-brand">FoodieHub</span>
+        <p class="footer-desc">Bringing the best food from the best restaurants right to your doorstep — hot, fresh, and always on time.</p>
+        <div class="social-row">
+          <a href="#" class="soc-btn"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-twitter"></i></a>
+          <a href="https://linkedin.com/in/rifaq-ajmal-4b5a513b3" target="_blank" class="soc-btn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://github.com/rifaqajmal" target="_blank" class="soc-btn"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-4">
+        <div class="footer-head">Quick Links</div>
+        <ul class="footer-ul">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#popular">Popular</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <!-- Categories -->
+      <div class="col-lg-2 col-md-4">
+        <div class="footer-head">Categories</div>
+        <ul class="footer-ul">
+          <li><a href="#menu">Fast Food</a></li>
+          <li><a href="#menu">BBQ</a></li>
+          <li><a href="#menu">Desserts</a></li>
+          <li><a href="#menu">Drinks</a></li>
+          <li><a href="#menu">Specials</a></li>
+        </ul>
+      </div>
+      <!-- Contact -->
+      <div class="col-lg-4 col-md-4">
+        <div class="footer-head">Contact Us</div>
+        <div class="contact-row"><i class="fas fa-map-marker-alt"></i><span>123 Food Street, Mardan, KPK, Pakistan</span></div>
+        <div class="contact-row"><i class="fas fa-phone"></i><span>+92 300 0000000</span></div>
+        <div class="contact-row"><i class="fas fa-envelope"></i><span>hello@foodiehub.pk</span></div>
+        <div class="contact-row"><i class="fas fa-clock"></i><span>Open Daily: 10:00 AM – 11:00 PM</span></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 FoodieHub. Designed &amp; Built with ❤️ by
+      <strong style="color:var(--accent)">Rifaq Ajmal</strong>
+      — UET Mardan, Computer Science
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════ CART SIDEBAR ═══════════════ -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-hdr">
+    <div class="cart-hdr-title"><i class="fas fa-shopping-bag me-2" style="color:var(--accent)"></i>Your Cart</div>
+    <button class="btn-close-cart" onclick="closeCart()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty-state" id="cartEmpty">
+      <i class="fas fa-shopping-bag"></i>
+      <p style="font-weight:700;color:var(--text-primary)">Your cart is empty</p>
+      <p style="font-size:.82rem">Add items from the menu to get started!</p>
+    </div>
+  </div>
+  <div class="cart-ftr" id="cartFtr" style="display:none">
+    <div class="total-row">
+      <span class="total-lbl">Total Amount:</span>
+      <span class="total-amt" id="cartTotal">Rs. 0</span>
+    </div>
+    <button class="btn-checkout" onclick="checkout()">
+      <i class="fas fa-bolt"></i> Confirm Order
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════ TOAST ═══════════════ -->
+<div class="toast-box" id="toastBox"></div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ═══════════════ DATA ═══════════════ */
+const FOODS = [
+  { id:1, name:"Classic Smash Burger",   desc:"Double smash patty, cheddar, special sauce, brioche bun",     price:650,  rating:4.9, reviews:312, tag:"Bestseller", emoji:"🍔", img:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop" },
+  { id:2, name:"Margherita Pizza",        desc:"San Marzano tomatoes, fresh mozzarella, fresh basil",         price:850,  rating:4.8, reviews:241, tag:"Popular",    emoji:"🍕", img:"https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&auto=format&fit=crop" },
+  { id:3, name:"Creamy Pasta Alfredo",    desc:"Fettuccine, parmesan cream sauce, grilled chicken strips",    price:720,  rating:4.7, reviews:189, tag:"New",         emoji:"🍝", img:"https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=500&auto=format&fit=crop" },
+  { id:4, name:"Fresh Fruit Shake",       desc:"Mango, strawberry, banana blend with whipped cream",          price:350,  rating:4.9, reviews:423, tag:"Fan Fav",    emoji:"🥤", img:"https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=500&auto=format&fit=crop" },
+  { id:5, name:"BBQ Beef Ribs Platter",   desc:"Slow-smoked beef ribs with house BBQ sauce & crispy fries",  price:1200, rating:4.8, reviews:156, tag:"Premium",    emoji:"🔥", img:"https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop" },
+  { id:6, name:"Chocolate Lava Cake",     desc:"Warm dark chocolate cake with molten center & vanilla cream", price:420,  rating:4.9, reviews:287, tag:"Dessert",    emoji:"🍫", img:"https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500&auto=format&fit=crop" },
+];
+
+const MENU = [
+  { id:101, name:"Chicken Shawarma",      desc:"Grilled chicken, garlic sauce, veggies, wrapped tight",       price:380,  cat:"fastfood", emoji:"🌯" },
+  { id:102, name:"Crispy Chicken Burger", desc:"Crunchy fried chicken fillet, coleslaw, mayo",                price:550,  cat:"fastfood", emoji:"🍔" },
+  { id:103, name:"Loaded Fries",          desc:"Crispy fries, cheese sauce, jalapeños, sour cream",           price:320,  cat:"fastfood", emoji:"🍟" },
+  { id:104, name:"Chicken Nuggets (12pc)",desc:"Golden nuggets with 3 dipping sauces",                        price:490,  cat:"fastfood", emoji:"🍗" },
+  { id:201, name:"Chapli Kabab Platter",  desc:"3 chapli kababs with naan, mint chutney, raita",              price:750,  cat:"bbq",      emoji:"🥩" },
+  { id:202, name:"Seekh Kabab (6pc)",     desc:"Spiced minced beef kababs on skewers",                        price:620,  cat:"bbq",      emoji:"🍢" },
+  { id:203, name:"BBQ Mixed Grill",       desc:"Chicken tikka, boti, seekh kabab combo platter",              price:1100, cat:"bbq",      emoji:"🔥" },
+  { id:204, name:"Chicken Tikka (Half)",  desc:"Marinated half chicken, tandoor grilled to perfection",       price:850,  cat:"bbq",      emoji:"🍖" },
+  { id:301, name:"Gulab Jamun (6pc)",     desc:"Soft syrup-soaked milk dumplings served warm",                price:250,  cat:"desserts", emoji:"🍮" },
+  { id:302, name:"Brownie Sundae",        desc:"Warm fudge brownie, vanilla ice cream, chocolate drizzle",    price:480,  cat:"desserts", emoji:"🍨" },
+  { id:303, name:"Kulfi Falooda",         desc:"Rose falooda with pistachio kulfi and basil seeds",           price:360,  cat:"desserts", emoji:"🍧" },
+  { id:304, name:"Chocolate Lava Cake",   desc:"Warm dark chocolate with irresistible molten center",         price:420,  cat:"desserts", emoji:"🍫" },
+  { id:401, name:"Mint Lemonade",         desc:"Fresh squeezed with crushed ice and mint leaves",             price:220,  cat:"drinks",   emoji:"🍋" },
+  { id:402, name:"Mango Lassi",           desc:"Chilled mango, creamy yogurt, cardamom blend",                price:280,  cat:"drinks",   emoji:"🥭" },
+  { id:403, name:"Cold Coffee (Oreo)",    desc:"Blended coffee with Oreo crumble and whipped cream",          price:350,  cat:"drinks",   emoji:"☕" },
+  { id:404, name:"Watermelon Juice",      desc:"100% fresh watermelon, no added sugar — pure refreshment",    price:200,  cat:"drinks",   emoji:"🍉" },
+];
+
+const REVIEWS = [
+  { init:"AK", name:"Ahmed Khan",   role:"🍔 Burger Lover",    stars:5, text:"The burgers here are absolutely incredible — perfectly juicy with the most amazing toppings. Delivered hot and fresh in just 25 minutes. FoodieHub is now my go-to every Friday night!" },
+  { init:"SR", name:"Sara Rahman",  role:"🔥 BBQ Enthusiast",  stars:5, text:"I tried the BBQ platter for the first time and wow — mind-blowing flavours. The meat was so tender it fell right off the bone. Highly recommend to everyone!" },
+  { init:"MU", name:"Muhammad Umar",role:"🍰 Dessert Fanatic", stars:4, text:"The pasta and desserts are simply divine. Great portion sizes and the packaging keeps everything warm. The chocolate lava cake was the highlight of my entire week!" },
+  { init:"FA", name:"Fatima Aslam", role:"🥤 Drinks Fan",      stars:5, text:"Super fast delivery, always on time. The shawarma is packed with flavour and the drinks always arrive perfectly chilled. I have ordered 12 times and never been disappointed!" },
+  { init:"ZQ", name:"Zain Qureshi", role:"🌶️ Spice Lover",    stars:5, text:"Best food delivery service in the city! The chapli kabab platter brought back memories of home. Perfectly spiced, fresh, and huge portions. Will definitely order again!" },
+  { init:"NA", name:"Nadia Akhtar", role:"🍕 Pizza Addict",    stars:5, text:"The interface is clean, ordering is so easy, and the food quality is consistently amazing. The pizza was fresh out of the oven — crust perfectly crispy. 10 out of 10!" },
+];
+
+/* ═══════════════ CART STATE ═══════════════ */
+let cart = [];
+
+/* ═══════════════ RENDER FOOD CARDS ═══════════════ */
+function renderFoods() {
+  document.getElementById('foodGrid').innerHTML = FOODS.map((f,i) => `
+    <div class="col-lg-4 col-md-6 reveal" style="transition-delay:${i*0.07}s">
+      <div class="food-card">
+        <div class="food-img-wrap">
+          <img src="${f.img}" alt="${f.name}" class="food-img"
+               onerror="this.parentElement.innerHTML='<div style=\\'height:100%;display:flex;align-items:center;justify-content:center;font-size:5rem;\\'>${f.emoji}</div>'">
+          <span class="food-tag">${f.tag}</span>
+          <div class="food-fav" onclick="toggleFav(this)"><i class="far fa-heart"></i></div>
+        </div>
+        <div class="food-body">
+          <div class="food-name">${f.name}</div>
+          <div class="food-desc">${f.desc}</div>
+          <div class="food-rating">
+            <span class="food-stars">★★★★★</span>
+            <strong style="font-size:.8rem">${f.rating}</strong>
+            <span style="color:var(--text-secondary)">(${f.reviews})</span>
+          </div>
+          <div class="food-footer">
+            <div class="food-price">Rs. ${f.price}<sub>/order</sub></div>
+            <button class="btn-add" onclick="addToCart(${f.id})" title="Add to Cart">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  bindReveal();
+}
+
+/* ═══════════════ RENDER MENU ═══════════════ */
+function renderMenu(cat='all') {
+  const list = cat==='all' ? MENU : MENU.filter(m=>m.cat===cat);
+  document.getElementById('menuGrid').innerHTML = list.map(m => `
+    <div class="menu-card reveal">
+      <div class="menu-emoji">${m.emoji}</div>
+      <div style="flex:1">
+        <div class="menu-name">${m.name}</div>
+        <div class="menu-desc">${m.desc}</div>
+        <div class="menu-bottom">
+          <span class="menu-price">Rs. ${m.price}</span>
+          <button class="btn-add-sm"
+            onclick="addToCart(${m.id},'${m.name.replace(/'/g,"\\'")}',${m.price},'${m.emoji}')">
+            + Add
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  bindReveal();
+}
+
+function filterMenu(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMenu(cat);
+}
+
+/* ═══════════════ RENDER REVIEWS ═══════════════ */
+function renderReviews() {
+  const stars = n => '★'.repeat(n) + '☆'.repeat(5-n);
+  document.getElementById('reviewsGrid').innerHTML = REVIEWS.map((r,i) => `
+    <div class="col-lg-4 col-md-6 reveal" style="transition-delay:${i*0.08}s">
+      <div class="review-card">
+        <div class="review-stars">${stars(r.stars)}</div>
+        <p class="review-text">"${r.text}"</p>
+        <div class="review-author">
+          <div class="review-av">${r.init}</div>
+          <div>
+            <div class="author-name">${r.name}</div>
+            <div class="author-role">${r.role}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  bindReveal();
+}
+
+/* ═══════════════ CART ═══════════════ */
+function addToCart(id, name, price, emoji) {
+  if (!name) {
+    const f = FOODS.find(f=>f.id===id);
+    if(!f) return;
+    name=f.name; price=f.price; emoji=f.emoji;
+  }
+  const ex = cart.find(c=>c.id===id);
+  if(ex) ex.qty++;
+  else cart.push({id,name,price,emoji,qty:1});
+  updateCart();
+  showToast(`${emoji} ${name} added to cart!`);
+}
+
+function changeQty(id, d) {
+  const item = cart.find(c=>c.id===id);
+  if(!item) return;
+  item.qty += d;
+  if(item.qty<=0) cart = cart.filter(c=>c.id!==id);
+  updateCart();
+}
+
+function updateCart() {
+  const total = cart.reduce((s,c)=>s+c.qty,0);
+  document.getElementById('cartBadge').textContent = total;
+
+  const body  = document.getElementById('cartBody');
+  const empty = document.getElementById('cartEmpty');
+  const ftr   = document.getElementById('cartFtr');
+
+  if(!cart.length) {
+    body.innerHTML=''; body.appendChild(empty);
+    empty.style.display='flex'; ftr.style.display='none'; return;
+  }
+  empty.style.display='none'; ftr.style.display='block';
+
+  body.innerHTML = cart.map(c=>`
+    <div class="cart-item">
+      <div class="c-emoji">${c.emoji}</div>
+      <div style="flex:1">
+        <div class="c-name">${c.name}</div>
+        <div class="c-price">Rs. ${(c.price*c.qty).toLocaleString()}</div>
+      </div>
+      <div class="qty-ctrl">
+        <div class="qty-btn" onclick="changeQty(${c.id},-1)"><i class="fas fa-minus"></i></div>
+        <span class="qty-n">${c.qty}</span>
+        <div class="qty-btn" onclick="changeQty(${c.id},1)"><i class="fas fa-plus"></i></div>
+      </div>
+    </div>
+  `).join('');
+
+  const amount = cart.reduce((s,c)=>s+c.price*c.qty,0);
+  document.getElementById('cartTotal').textContent = `Rs. ${amount.toLocaleString()}`;
+}
+
+function openCart()  { document.getElementById('cartOverlay').classList.add('open');  document.getElementById('cartSidebar').classList.add('open'); }
+function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); document.getElementById('cartSidebar').classList.remove('open'); }
+
+function checkout() {
+  showToast('🎉 Order placed! Estimated delivery: 30 mins.');
+  cart=[]; updateCart(); closeCart();
+}
+
+/* ═══════════════ FAVOURITES ═══════════════ */
+function toggleFav(el) {
+  el.classList.toggle('active');
+  const ic = el.querySelector('i');
+  ic.classList.toggle('far'); ic.classList.toggle('fas');
+}
+
+/* ═══════════════ DARK MODE ═══════════════ */
+function toggleTheme() {
+  const html = document.documentElement;
+  const icon = document.getElementById('themeIcon');
+  const isDark = html.dataset.theme==='dark';
+  html.dataset.theme = isDark ? 'light' : 'dark';
+  icon.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+}
+
+/* ═══════════════ TOAST ═══════════════ */
+function showToast(msg) {
+  const box = document.getElementById('toastBox');
+  const t = document.createElement('div');
+  t.className='toast-msg';
+  t.innerHTML=`<i class="fas fa-check-circle"></i> ${msg}`;
+  box.appendChild(t);
+  setTimeout(()=>{
+    t.style.cssText='opacity:0;transform:translateX(50px);transition:all .3s';
+    setTimeout(()=>t.remove(),300);
+  },2600);
+}
+
+/* ═══════════════ SCROLL REVEAL ═══════════════ */
+function bindReveal() {
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal:not(.show)').forEach(el=>obs.observe(el));
+}
+
+/* ═══════════════ NAVBAR SCROLL ═══════════════ */
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY>60);
+});
+
+/* ═══════════════ INIT ═══════════════ */
+renderFoods();
+renderMenu();
+renderReviews();
+updateCart();
+bindReveal();
+</script>
+</body>
+</html>
