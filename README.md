@@ -4,7 +4,7 @@
 
 <br>
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-FF6B2B?style=for-the-badge)](https://rifaqajmal.github.io/foodiehub/)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-FF6B2B?style=for-the-badge)](https://rifaqajmal.github.io/foodiehub-Website/)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/rifaqajmal/foodiehub)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Rifaq_Ajmal-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/rifaq-ajmal-4b5a513b3)
 
@@ -65,7 +65,7 @@ xdg-open index.html    # Linux
 ```
 
 ### Option 2 — Live via GitHub Pages
-Visit the live site: **[rifaqajmal.github.io/foodiehub](https://rifaqajmal.github.io/foodiehub/)**
+Visit the live site: **[rifaqajmal.github.io/foodiehub](https://rifaqajmal.github.io/foodiehub-Website/)**
 
 <br>
 
