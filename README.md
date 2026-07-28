@@ -5,7 +5,7 @@
 <br>
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-FF6B2B?style=for-the-badge)](https://rifaqajmal.github.io/foodiehub-Website/)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/rifaqajmal/foodiehub)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/Rifaqajmal/foodiehub-Website)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Rifaq_Ajmal-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/rifaq-ajmal-4b5a513b3)
 
 <br>
@@ -45,7 +45,7 @@ foodiehub/
 └── README.md           ← Project documentation
 ```
 
-> **Single-file architecture** — no build tools, no dependencies to install.  
+> **Single-file architecture** — no build tools, no dependencies to install.
 > Just open `index.html` in any browser and it works instantly.
 
 <br>
@@ -55,17 +55,17 @@ foodiehub/
 ### Option 1 — Open Locally
 ```bash
 # 1. Clone the repository
-git clone https://github.com/rifaqajmal/foodiehub.git
+git clone https://github.com/Rifaqajmal/foodiehub-Website.git
 
 # 2. Open in browser
-cd foodiehub
+cd foodiehub-Website
 open index.html        # macOS
 start index.html       # Windows
 xdg-open index.html    # Linux
 ```
 
 ### Option 2 — Live via GitHub Pages
-Visit the live site: **[rifaqajmal.github.io/foodiehub](https://rifaqajmal.github.io/foodiehub-Website/)**
+Visit the live site: **[rifaqajmal.github.io/foodiehub-Website](https://rifaqajmal.github.io/foodiehub-Website/)**
 
 <br>
 
@@ -103,7 +103,7 @@ Full theme switch using CSS custom properties — no flickering, no JavaScript c
 
 ## 🔮 Future Improvements
 
-- [ ] Backend integration (Node.js / Django)
+- [ ] Backend integration (PHP / MySQL)
 - [ ] Real order & payment system
 - [ ] User login & signup
 - [ ] Admin dashboard
@@ -114,11 +114,11 @@ Full theme switch using CSS custom properties — no flickering, no JavaScript c
 
 ## 👨‍💻 About the Developer
 
-**Rifaq Ajmal**  
-BS Computer Science — Semester 6  
+**Rifaq Ajmal**
+BS Computer Science — Semester 6
 University of Engineering & Technology (UET), Mardan, Pakistan
 
-- 🌐 [GitHub Profile](https://github.com/rifaqajmal)
+- 🌐 [GitHub Profile](https://github.com/Rifaqajmal)
 - 💼 [LinkedIn Profile](https://linkedin.com/in/rifaq-ajmal-4b5a513b3)
 
 <br>
